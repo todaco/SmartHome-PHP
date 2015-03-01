@@ -525,12 +525,20 @@ class SmartHome
 						break;
 
 					case LogicalDevice::DEVICE_TYPE_GENERIC_ACTUATOR:
-						if (strcasecmp((String)$state->Ppts->Ppt['Value'],'true')==0)
+						if(strcasecmp((String)$state->Ppts->Ppt['Name'],'EmailNumberAvailable')==0 && ((int)$state->Ppts->Ppt['Value']) > 0)
+							$device->setState(GenericActuator::GENERIC_ACTUATOR_STATE_ON);
+						elseif(strcasecmp((String)$state->Ppts->Ppt['Name'],'EmailNumberAvailable')==0 && ((int)$state->Ppts->Ppt['Value']) <= 0)
+							$device->setState(GenericActuator::GENERIC_ACTUATOR_STATE_OFF);
+						elseif(strcasecmp((String)$state->Ppts->Ppt['Name'],'SMSNumberAvailable')==0 && ((int)$state->Ppts->Ppt['Value']) > 0)
+							$device->setState(GenericActuator::GENERIC_ACTUATOR_STATE_ON);
+						elseif(strcasecmp((String)$state->Ppts->Ppt['Name'],'SMSNumberAvailable')==0 && ((int)$state->Ppts->Ppt['Value']) <= 0)
+							$device->setState(GenericActuator::GENERIC_ACTUATOR_STATE_OFF);
+						elseif (strcasecmp((String)$state->Ppts->Ppt['Value'],'true')==0)
 							$device->setState(GenericActuator::GENERIC_ACTUATOR_STATE_ON);
 						elseif (strcasecmp((String)$state->Ppts->Ppt['Value'],'false')==0)
 							$device->setState(GenericActuator::GENERIC_ACTUATOR_STATE_OFF);
 						else
-							throw new \Exception('Unknown GenericActuator state "' . (String)$state['IsOn'] . '"', 104);
+							throw new \Exception('Unknown GenericActuator state "' . (String)$state['Value'] . '"', 104);
 						break;
 
 					case LogicalDevice::DEVICE_TYPE_GENERIC_SENSOR:
